@@ -1,9 +1,11 @@
 const authenticateRouter = require('express').Router();
 const User = require('../models/user');
-const { generateToken } = require('../utilities');
+const { generateToken,getHashedPassword } = require('../utilities');
 
 authenticateRouter.post('/login', async (req, res) => {
-  const { userName, password } = req.body;
+  let { userName, password } = req.body;
+
+  password = await getHashedPassword(password);
 
   try {
     const user = await User.findOne({ username: userName, password: password });
@@ -22,7 +24,10 @@ authenticateRouter.post('/login', async (req, res) => {
 });
 
 authenticateRouter.post('/signup', async (req, res) => {
-  const { userName, password } = req.body;
+  let { userName, password } = req.body;
+  
+  password = await getHashedPassword(password);
+
   const userEntity = new User({ userName: userName, password: password });
 
   try {
