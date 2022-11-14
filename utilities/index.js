@@ -11,10 +11,9 @@ function generateToken({ userName }) {
 }
 
 async function getHashedPassword(password) {
-  const bcrypt = require("bcrypt");
-  const salt = await bcrypt.genSalt(10);
-  password = await bcrypt.hash(password, salt);
+  const bcrypt = require('bcrypt');
+  password = await bcrypt.hash(password, 10);
   return password;
 }
 
-module.exports = { generateToken,getHashedPassword };
+module.exports = { generateToken, getHashedPassword };
